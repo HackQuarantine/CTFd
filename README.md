@@ -5,6 +5,23 @@
 [![MajorLeagueCyber Discourse](https://img.shields.io/discourse/status?server=https%3A%2F%2Fcommunity.majorleaguecyber.org%2F)](https://community.majorleaguecyber.org/)
 [![Documentation Status](https://readthedocs.org/projects/ctfd/badge/?version=latest)](https://docs.ctfd.io/en/latest/?badge=latest)
 
+## CONFIGURATION
+
+```
+OAUTH_CLIENT_ID=<CLIENT ID>
+OAUTH_CLIENT_SECRET=<CLIENT SECRET>
+OAUTH_AUTH_ENDPOINT=https://platform.hackquarantine.com/wp-json/moserver/authorize
+OAUTH_TOKEN_ENDPOINT=https://platform.hackquarantine.com/wp-json/moserver/token
+OAUTH_API_ENDPOINT=https://platform.hackquarantine.com/wp-json/moserver/resource
+REGISTRATIONS_ENABLED=False
+```
+
+Those need to be defined as environment variables.
+
+You'll also need to set the OAUTH client details up in the CTFd admin panel.
+
+(go to /admin_login to access it!)
+
 ## What is CTFd?
 CTFd is a Capture The Flag framework focusing on ease of use and customizability. It comes with everything you need to run a CTF and it's easy to customize with plugins and themes.
 
