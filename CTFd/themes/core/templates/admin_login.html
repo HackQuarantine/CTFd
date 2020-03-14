@@ -22,12 +22,11 @@
 
 			{% if integrations.mlc() %}
 			<a class="btn btn-secondary btn-lg btn-block" href="{{ url_for('auth.oauth_login') }}">
-                Login with HackQuarantine
+				Login with via HackQuarantine!
 			</a>
 
 			<hr>
 			{% endif %}
-            <!--
 			<form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal">
 				<div class="form-group">
 					<label for="name-input">
@@ -55,7 +54,6 @@
 				</div>
 				<input type="hidden" name="nonce" value="{{ nonce }}">
 			</form>
-            -->
 		</div>
 	</div>
 </div>

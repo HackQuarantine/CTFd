@@ -179,7 +179,7 @@ def reset_password(data=None):
 @ratelimit(method="POST", limit=10, interval=5)
 def register():
     errors = get_errors()
-    if request.method == "POST":
+    if request.method == "POST" and get_app_config('REGISTRATIONS_ENABLED', True):
         name = request.form.get("name", "").strip()
         email_address = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "").strip()
@@ -261,9 +261,9 @@ def register():
         return render_template("register.html", errors=errors)
 
 
-@auth.route("/login", methods=["POST", "GET"])
+@auth.route("/admin_login", methods=["POST", "GET"])
 @ratelimit(method="POST", limit=10, interval=5)
-def login():
+def admin_login():
     errors = get_errors()
     if request.method == "POST":
         name = request.form["name"]
@@ -293,30 +293,34 @@ def login():
                 log("logins", "[{date}] {ip} - submitted invalid password for {name}")
                 errors.append("Your username or password is incorrect")
                 db.session.close()
-                return render_template("login.html", errors=errors)
+                return render_template("admin_login.html", errors=errors)
         else:
             # This user just doesn't exist
             log("logins", "[{date}] {ip} - submitted invalid account information")
             errors.append("Your username or password is incorrect")
             db.session.close()
-            return render_template("login.html", errors=errors)
+            return render_template("admin_login.html", errors=errors)
     else:
         db.session.close()
-        return render_template("login.html", errors=errors)
+        return render_template("admin_login.html", errors=errors)
 
+@auth.route("/login", methods=["POST", "GET"])
+@ratelimit(method="POST", limit=10, interval=5)
+def login():
+    errors = get_errors()
+    return render_template("login.html", errors=errors)
 
 @auth.route("/oauth")
 def oauth_login():
     endpoint = (
-        get_app_config("OAUTH_AUTHORIZATION_ENDPOINT")
+        get_app_config("OAUTH_AUTH_ENDPOINT")
         or get_config("oauth_authorization_endpoint")
         or "https://auth.majorleaguecyber.org/oauth/authorize"
     )
 
-    if get_config("user_mode") == "teams":
-        scope = "profile team"
-    else:
-        scope = "profile"
+    print(get_app_config('OAUTH_AUTH_ENDPOINT'))
+
+    scope = "openid profile"
 
     client_id = get_app_config("OAUTH_CLIENT_ID") or get_config("oauth_client_id")
 
@@ -363,7 +367,7 @@ def oauth_redirect():
             "grant_type": "authorization_code",
         }
         token_request = requests.post(url, data=data, headers=headers)
-
+        print(token_request.text)
         if token_request.status_code == requests.codes.ok:
             token = token_request.json()["access_token"]
             user_url = (
@@ -377,9 +381,9 @@ def oauth_redirect():
                 "Content-type": "application/json",
             }
             api_data = requests.get(url=user_url, headers=headers).json()
-
+            print('>', api_data)
             user_id = api_data["id"]
-            user_name = api_data["name"]
+            user_name = api_data["username"]
             user_email = api_data["email"]
 
             user = Users.query.filter_by(email=user_email).first()

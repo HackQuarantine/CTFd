@@ -250,6 +250,15 @@ class Config(object):
     """
     OAUTH_CLIENT_ID = os.getenv("OAUTH_CLIENT_ID")
     OAUTH_CLIENT_SECRET = os.getenv("OAUTH_CLIENT_SECRET")
+    OAUTH_AUTH_ENDPOINT = os.getenv("OAUTH_AUTH_ENDPOINT")
+    OAUTH_TOKEN_ENDPOINT = os.getenv("OAUTH_TOKEN_ENDPOINT")
+    OAUTH_API_ENDPOINT = os.getenv("OAUTH_API_ENDPOINT")
+
+
+    """
+    Registration control
+    """
+    REGISTRATIONS_ENABLED = os.getenv("REGISTRATIONS_ENABLED")
 
 
 class TestingConfig(Config):

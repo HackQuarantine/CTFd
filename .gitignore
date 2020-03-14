@@ -21,6 +21,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+.venv
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -64,6 +65,7 @@ CTFd/uploads
 .data/
 .ctfd_secret_key
 .*.swp
+.env
 
 # Vagrant
 .vagrant
